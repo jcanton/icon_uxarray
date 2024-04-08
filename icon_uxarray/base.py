@@ -13,23 +13,23 @@ import uxarray as ux
 
 
 # ==============================================================================
-def iconGrid2Ugrid(iconGrid_fname: str) -> str:
+def icon_grid_2_ugrid(icon_grid_fname: str) -> str:
     """
     Convert an ICON grid to being UGRID-compatible.
 
     Parameters:
-    iconGrid_fname (str): The file path of the ICON grid dataset.
+    icon_grid_fname (str): The file path of the ICON grid dataset.
 
     Returns:
-    str: The file path of the UGRID-compatible grid dataset.
+    ugrid_fname (str): The file path of the UGRID-compatible grid dataset.
 
     References:
     - UGRID conventions:
-    http://ugrid-conventions.github.io/ugrid-conventions/#2d-triangular-mesh-topology
+    http://ugrid-conventions.github.io/ugrid-conventions
     """
 
     # Load grid
-    xr_grid = xr.open_dataset(iconGrid_fname)
+    xr_grid = xr.open_dataset(icon_grid_fname)
 
     # Adapt from Fortran zero basednes... only for real index fields (not all
     # int32 arrays contain indices) for example refin_ctl whereas in ICON
@@ -79,7 +79,7 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
 
     # Store topology information
     xr_grid["mesh"] = xr.DataArray(
-        -1, # Dummy value for creating the DataArray with the actual attributes
+        -1,  # Dummy value for creating the DataArray with attributes
         attrs=dict(
             cf_role="mesh_topology",
             topology_dimension=2,
@@ -98,25 +98,26 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
     )
 
     # Save to file
-    uGrid_fname = os.path.join(
-        os.path.dirname(iconGrid_fname), "ux_" + os.path.basename(iconGrid_fname)
+    ugrid_fname = os.path.join(
+        os.path.dirname(icon_grid_fname),
+        "ux_" + os.path.basename(icon_grid_fname),
     )
-    if os.path.isfile(uGrid_fname):
-        os.remove(uGrid_fname)
-    xr_grid.to_netcdf(uGrid_fname, mode="w", format="NETCDF4")
+    if os.path.isfile(ugrid_fname):
+        os.remove(ugrid_fname)
+    xr_grid.to_netcdf(ugrid_fname, mode="w", format="NETCDF4")
 
-    return uGrid_fname
+    return ugrid_fname
 
 
 # ==============================================================================
-def isBoundaryTriangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
+def is_boundary_triangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
     """
     Determines if a triangle in a grid is a boundary triangle.
 
     Args:
         grid (ux.Grid): The grid containing the triangle.
         itri (int): The index of the triangle.
-        lims (list[float]): The minimum and maximum values for x and y coordinates.
+        lims (list[float]): The min and max values for x and y coordinates.
 
     Returns:
         bool: True if the triangle is a boundary triangle, False otherwise.
