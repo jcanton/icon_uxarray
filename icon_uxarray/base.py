@@ -24,15 +24,16 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
     str: The file path of the UGRID-compatible grid dataset.
 
     References:
-    - UGRID conventions: http://ugrid-conventions.github.io/ugrid-conventions/#2d-triangular-mesh-topology
+    - UGRID conventions:
+    http://ugrid-conventions.github.io/ugrid-conventions/#2d-triangular-mesh-topology
     """
 
     # Load grid
     xr_grid = xr.open_dataset(iconGrid_fname)
 
-    # Adapt from Fortran zero basednes... only for real index fields (not all int32
-    # arrays contain indices) for example refin_ctl whereas in ICON indices and
-    # refin_ctl values
+    # Adapt from Fortran zero basednes... only for real index fields (not all
+    # int32 arrays contain indices) for example refin_ctl whereas in ICON
+    # indices and refin_ctl values
     index_lists = [
         "cell_index",
         "edge_index",
@@ -78,7 +79,7 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
 
     # Store topology information
     xr_grid["mesh"] = xr.DataArray(
-        -1,  # A dummy value for creating the DataArray with the actual attributes
+        -1, # Dummy value for creating the DataArray with the actual attributes
         attrs=dict(
             cf_role="mesh_topology",
             topology_dimension=2,
