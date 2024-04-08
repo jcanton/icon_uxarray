@@ -44,8 +44,8 @@ def test_icon_grid_2_ugrid():
     assert ugrid.mesh.face_face_connectivity == "neighbor_cell_index"
     assert ugrid.mesh.edge_face_connectivity == "adjacent_cell_of_edge"
 
-    # Clean up the temporary files
-    os.remove(ugrid_fname)
+    # # Clean up the temporary files
+    # os.remove(ugrid_fname)
 
 
 def test_is_boundary_triangle():
@@ -91,5 +91,5 @@ def test_is_boundary_triangle():
 
     assert face_ids == expected
 
-    # Clean up the temporary files
-    os.remove(ugrid_fname)
+    # # Clean up the temporary files
+    # os.remove(ugrid_fname)
