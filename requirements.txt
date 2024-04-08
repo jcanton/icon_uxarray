@@ -1,3 +1,4 @@
 numpy >= 1.26.4
+scipy >= 1.12.0
 xarray >= 2024.2.0
 uxarray >= 2024.02.0
