@@ -66,11 +66,30 @@ def test_is_boundary_triangle():
     # Call the function
     grid = ux.open_grid(ugrid_fname)
     itri = 0
-    lims = [0, 1, 0, 1]
+    lims = [
+        float(grid.node_lon.min()),
+        float(grid.node_lon.max()),
+        float(grid.node_lat.min()),
+        float(grid.node_lat.max()),
+    ]
     result = is_boundary_triangle(grid, itri, lims)
 
     # Assert the result
     assert isinstance(result, bool)
+
+    face_ids = []
+    for itri in range(grid.n_face):
+        if is_boundary_triangle(grid, itri, lims):
+            face_ids.append(itri)
+
+    expected = [
+        30, 31, 62, 63, 94, 95, 126, 127, 158, 159, 189, 190, 191, 217,
+        218, 219, 220, 222, 223, 245, 246, 247, 248, 254, 255, 273, 274, 275,
+        276, 286, 287, 301, 302, 303, 304, 318, 319, 329, 330, 331, 332, 350,
+        351, 357, 358, 359, 360, 382, 383, 384, 385, 386, 387, 388, 414, 415
+        ]
+
+    assert face_ids == expected
 
     # Clean up the temporary files
     os.remove(ugrid_fname)
