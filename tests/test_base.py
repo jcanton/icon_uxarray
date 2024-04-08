@@ -5,35 +5,24 @@ Test module.
 import os
 import xarray as xr
 import uxarray as ux
-import numpy as np
 from icon_uxarray.base import icon_grid_2_ugrid, is_boundary_triangle
+
+ICON_GRID_FNAME = "Torus_Triangles_100m_x_100m_res5m.nc"
 
 
 def test_icon_grid_2_ugrid():
     """
     Test function for converting ICON grid to UGRID format.
 
-    This function creates a temporary ICON grid file, calls the
-    `icon_grid_2_ugrid` function to convert the grid to UGRID format, and then
-    performs various assertions to validate the output file.
+    This function tests the conversion of an ICON grid file to UGRID format.
+    It checks if the output file exists and verifies the correctness of the
+    topology information stored in the UGRID dataset.
 
     Returns:
         None
     """
-    # Create a temporary ICON grid file
-    icon_grid_fname = "temp_icon_grid.nc"
-    xr_grid = xr.Dataset(
-        {
-            "cell_index": (["x", "y"], np.array([[1, 2], [3, 4]])),
-            "edge_index": (["x", "y"], np.array([[5, 6], [7, 8]])),
-            "vertex_index": (["x", "y"], np.array([[9, 10], [11, 12]])),
-        },
-        coords={"x": [0, 1], "y": [0, 1]},
-    )
-    xr_grid.to_netcdf(icon_grid_fname)
-
     # Call the function
-    ugrid_fname = icon_grid_2_ugrid(icon_grid_fname)
+    ugrid_fname = icon_grid_2_ugrid(ICON_GRID_FNAME)
 
     # Assert the output file exists
     assert os.path.isfile(ugrid_fname)
@@ -56,7 +45,6 @@ def test_icon_grid_2_ugrid():
     assert ugrid.mesh.edge_face_connectivity == "adjacent_cell_of_edge"
 
     # Clean up the temporary files
-    os.remove(icon_grid_fname)
     os.remove(ugrid_fname)
 
 
@@ -64,26 +52,19 @@ def test_is_boundary_triangle():
     """
     Test case for the is_boundary_triangle function.
 
-    This function creates a temporary ICON grid file, calls the
-    is_boundary_triangle function with some test parameters, and asserts that
-    the result is of type bool.
+    This function tests the behavior of the is_boundary_triangle function by
+    calling it with a grid, triangle index, and boundary limits, and asserting
+    that the result is a boolean value.
 
-    It also cleans up the temporary files after the test is completed.
+    It also cleans up any temporary files created during the test.
+
+    Returns:
+        None
     """
-    # Create a temporary ICON grid file
-    icon_grid_fname = "temp_icon_grid.nc"
-    xr_grid = xr.Dataset(
-        {
-            "cell_index": (["x", "y"], np.array([[1, 2], [3, 4]])),
-            "edge_index": (["x", "y"], np.array([[5, 6], [7, 8]])),
-            "vertex_index": (["x", "y"], np.array([[9, 10], [11, 12]])),
-        },
-        coords={"x": [0, 1], "y": [0, 1]},
-    )
-    xr_grid.to_netcdf(icon_grid_fname)
+    ugrid_fname = icon_grid_2_ugrid(ICON_GRID_FNAME)
 
     # Call the function
-    grid = ux.Grid.from_netcdf(icon_grid_fname)
+    grid = ux.open_grid(ugrid_fname)
     itri = 0
     lims = [0, 1, 0, 1]
     result = is_boundary_triangle(grid, itri, lims)
@@ -92,4 +73,4 @@ def test_is_boundary_triangle():
     assert isinstance(result, bool)
 
     # Clean up the temporary files
-    os.remove(icon_grid_fname)
+    os.remove(ugrid_fname)
