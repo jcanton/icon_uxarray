@@ -28,13 +28,11 @@ install:          ## Install the project in dev mode.
 fmt:              ## Format code using black & isort.
 	$(ENV_PREFIX)isort icon_uxarray/
 	$(ENV_PREFIX)black -l 79 icon_uxarray/
-	$(ENV_PREFIX)black -l 79 tests/
 
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
 	$(ENV_PREFIX)flake8 icon_uxarray/
 	$(ENV_PREFIX)black -l 79 --check icon_uxarray/
-	$(ENV_PREFIX)black -l 79 --check tests/
 	$(ENV_PREFIX)mypy --ignore-missing-imports icon_uxarray/
 
 .PHONY: test
