@@ -93,18 +93,19 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
 
 
 #===============================================================================
-def isBoundaryTriangle(grid: ux.Grid, itri: int) -> bool:
+def isBoundaryTriangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
     """
     Determines if a triangle in a grid is a boundary triangle.
 
     Args:
         grid (ux.Grid): The grid containing the triangle.
         itri (int): The index of the triangle.
+        lims (list[float]): The minimum and maximum values for x and y coordinates.
 
     Returns:
         bool: True if the triangle is a boundary triangle, False otherwise.
     """
-    #nonlocal x_min, x_max, y_min, y_max
+    x_min, x_max, y_min, y_max = lims
     tol=1e-6
     nodes = grid.face_node_connectivity[itri].data
     if ((np.abs(grid.node_lon[nodes].data-x_min) < tol).any() and (np.abs(grid.node_lon[nodes].data-x_max) < tol).any()) \
