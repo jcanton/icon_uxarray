@@ -12,7 +12,7 @@ import xarray as xr
 import uxarray as ux
 
 
-#===============================================================================
+# ==============================================================================
 def iconGrid2Ugrid(iconGrid_fname: str) -> str:
     """
     Convert an ICON grid to being UGRID-compatible.
@@ -34,38 +34,51 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
     # arrays contain indices) for example refin_ctl whereas in ICON indices and
     # refin_ctl values
     index_lists = [
-        "cell_index", "edge_index", "vertex_index",
-        "parent_cell_index", "parent_edge_index", "parent_vertex_index",
-        "start_idx_c", "end_idx_c",
-        "start_idx_e", "end_idx_e",
-        "start_idx_v", "end_idx_v",
+        "cell_index",
+        "edge_index",
+        "vertex_index",
+        "parent_cell_index",
+        "parent_edge_index",
+        "parent_vertex_index",
+        "start_idx_c",
+        "end_idx_c",
+        "start_idx_e",
+        "end_idx_e",
+        "start_idx_v",
+        "end_idx_v",
         "neighbor_cell_index",
-        "edge_of_cell", "vertex_of_cell",
-        "adjacent_cell_of_edge", "edge_vertices",
-        "cells_of_vertex", "edges_of_vertex", "vertices_of_vertex",
+        "edge_of_cell",
+        "vertex_of_cell",
+        "adjacent_cell_of_edge",
+        "edge_vertices",
+        "cells_of_vertex",
+        "edges_of_vertex",
+        "vertices_of_vertex",
     ]
 
     for vname in index_lists:
         if vname in set(xr_grid.data_vars.keys()):
             #
             # make it zero-indexed
-            xr_grid[vname].data = np.where(xr_grid[vname].data>0, xr_grid[vname].data-1, -1)
+            xr_grid[vname].data = np.where(
+                xr_grid[vname].data > 0, xr_grid[vname].data - 1, -1
+            )
             xr_grid[vname].attrs["start_index"] = 0
             xr_grid[vname].attrs["_FillValue"] = -1
             #
             # if needed, transpose
             vshape = xr_grid[vname].shape
-            if len(vshape)==2 and (vshape[0] < vshape[1]):
+            if len(vshape) == 2 and (vshape[0] < vshape[1]):
                 xr_grid[vname] = xr.DataArray(
-                    data = xr_grid[vname].data.T,
-                    dims = xr_grid[vname].dims[::-1],
-                    coords = xr_grid[vname].coords,
-                    attrs = xr_grid[vname].attrs,
+                    data=xr_grid[vname].data.T,
+                    dims=xr_grid[vname].dims[::-1],
+                    coords=xr_grid[vname].coords,
+                    attrs=xr_grid[vname].attrs,
                 )
 
     # Store topology information
     xr_grid["mesh"] = xr.DataArray(
-        -1, # A dummy value for creating the DataArray with the actual attributes
+        -1,  # A dummy value for creating the DataArray with the actual attributes
         attrs=dict(
             cf_role="mesh_topology",
             topology_dimension=2,
@@ -84,15 +97,17 @@ def iconGrid2Ugrid(iconGrid_fname: str) -> str:
     )
 
     # Save to file
-    uGrid_fname = os.path.join(os.path.dirname(iconGrid_fname), 'ux_'+os.path.basename(iconGrid_fname))
+    uGrid_fname = os.path.join(
+        os.path.dirname(iconGrid_fname), "ux_" + os.path.basename(iconGrid_fname)
+    )
     if os.path.isfile(uGrid_fname):
         os.remove(uGrid_fname)
-    xr_grid.to_netcdf(uGrid_fname, mode='w', format='NETCDF4')
+    xr_grid.to_netcdf(uGrid_fname, mode="w", format="NETCDF4")
 
     return uGrid_fname
 
 
-#===============================================================================
+# ==============================================================================
 def isBoundaryTriangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
     """
     Determines if a triangle in a grid is a boundary triangle.
@@ -106,15 +121,20 @@ def isBoundaryTriangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
         bool: True if the triangle is a boundary triangle, False otherwise.
     """
     x_min, x_max, y_min, y_max = lims
-    tol=1e-6
+    tol = 1e-6
     nodes = grid.face_node_connectivity[itri].data
-    if ((np.abs(grid.node_lon[nodes].data-x_min) < tol).any() and (np.abs(grid.node_lon[nodes].data-x_max) < tol).any()) \
-    or ((np.abs(grid.node_lat[nodes].data-y_min) < tol).any() and (np.abs(grid.node_lat[nodes].data-y_max) < tol).any()):
+    if (
+        (np.abs(grid.node_lon[nodes].data - x_min) < tol).any()
+        and (np.abs(grid.node_lon[nodes].data - x_max) < tol).any()
+    ) or (
+        (np.abs(grid.node_lat[nodes].data - y_min) < tol).any()
+        and (np.abs(grid.node_lat[nodes].data - y_max) < tol).any()
+    ):
         # opposite sides
         return True
     id_edges = grid.face_edge_connectivity[itri].data
     length_edges = grid.edge_node_distances[id_edges].data
-    if length_edges.max() > 2*length_edges.min():
+    if length_edges.max() > 2 * length_edges.min():
         # elongated
         return True
     return False
