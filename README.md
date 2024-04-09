@@ -9,7 +9,7 @@ Awesome icon_uxarray created by jcanton
 ## Install it from PyPI
 
 ```bash
-pip install icon_uxarray
+pip install icon-uxarray
 ```
 
 ## Usage
