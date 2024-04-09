@@ -2,6 +2,7 @@
 Test module.
 """
 
+import pytest
 import os
 import xarray as xr
 import uxarray as ux
@@ -139,5 +140,5 @@ def test_remove_torus_boundaries():
 
     # Test with invalid grid
     invalid_grid = None
-    result = remove_torus_boundaries(invalid_grid)
-    assert result is invalid_grid
+    with pytest.raises(Exception) as e_info:
+        remove_torus_boundaries(invalid_grid)

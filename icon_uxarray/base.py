@@ -160,8 +160,10 @@ def remove_torus_boundaries(
 
     if isinstance(ux_grid_or_ds, ux.UxDataset):
         grid = ux_grid_or_ds.uxgrid
-    else:
+    elif isinstance(ux_grid_or_ds, ux.Grid):
         grid = ux_grid_or_ds
+    else:
+        raise TypeError("Invalid input provided.")
 
     if grid is not None:
         lims = [
@@ -185,5 +187,6 @@ def remove_torus_boundaries(
             return grid2
 
     else:
-        print("ERROR: Invalid grid provided.")
+        # we're never supposed to get here, this line is just to please the
+        # linters that otherwise complain about missing return statements
         return ux_grid_or_ds
