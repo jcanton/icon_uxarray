@@ -2,8 +2,9 @@ Changelog
 =========
 
 
-(unreleased)
-------------
+0.1.3 (2024-04-09)
+------------------
+- Release: version 0.1.3 🚀 [Jacopo]
 - Release: version  🚀 [Jacopo]
 - Release: version  🚀 [Jacopo]
 - Cleanup. [Jacopo]
