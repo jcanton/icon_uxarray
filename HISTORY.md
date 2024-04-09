@@ -2,6 +2,18 @@ Changelog
 =========
 
 
+(unreleased)
+------------
+- Refactor remove_torus_boundaries function to handle invalid input
+  gracefully. [Jacopo]
+- Actually get make release to work properly with tags. [Jacopo]
+
+
+0.1.4 (2024-04-09)
+------------------
+- Release: version 0.1.4 🚀 [Jacopo]
+
+
 0.1.3 (2024-04-09)
 ------------------
 - Release: version 0.1.3 🚀 [Jacopo]
