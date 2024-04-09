@@ -5,6 +5,7 @@ Changelog
 (unreleased)
 ------------
 - Release: version  🚀 [Jacopo]
+- Release: version  🚀 [Jacopo]
 - Cleanup. [Jacopo]
 - Bump version number for pypi. [Jacopo]
 
