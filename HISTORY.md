@@ -4,6 +4,13 @@ Changelog
 
 (unreleased)
 ------------
+- Add base module to top level. [Jacopo]
+- Fix package name in installation command. [Jacopo]
+
+
+0.1.5 (2024-04-09)
+------------------
+- Release: version 0.1.5 🚀 [Jacopo]
 - Refactor remove_torus_boundaries function to handle invalid input
   gracefully. [Jacopo]
 - Actually get make release to work properly with tags. [Jacopo]
