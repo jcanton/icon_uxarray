@@ -49,6 +49,10 @@ def test_icon_grid_2_ugrid():
     assert ugrid.mesh.face_face_connectivity == "neighbor_cell_index"
     assert ugrid.mesh.edge_face_connectivity == "adjacent_cell_of_edge"
 
+    # test file overwriting
+    ugrid_fname = icon_grid_2_ugrid(ICON_GRID_FNAME)
+    assert os.path.isfile(ugrid_fname)
+
     # # Clean up the temporary files
     # os.remove(ugrid_fname)
 
