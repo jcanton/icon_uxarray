@@ -12,14 +12,11 @@ git git@github.com:jcanton/icon_uxarray.git
 cd icon_uxarray
 
 # Create a virtual environment
+# This step already installs all the packages and dependencies
 make virtualenv
 
-# Activate the virtual environment and make sure that 'wheel' is installed
+# Activate the virtual environment
 source .venv/bin/activate
-pip install --upgrade wheel
-
-# Install all the packages and dependencies
-make install
 
 # Finally, check that everything works
 make test
