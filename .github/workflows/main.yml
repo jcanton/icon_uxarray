@@ -49,9 +49,10 @@ jobs:
       - name: Run tests
         run: make test
       - name: "Upload coverage to Codecov"
-        uses: codecov/codecov-action@v3
-        # with:
-        #   fail_ci_if_error: true
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: jcanton/icon_uxarray
 
   tests_mac:
     needs: linter
