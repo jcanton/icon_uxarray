@@ -37,8 +37,6 @@ def icon_grid_2_ugrid(icon_grid_fname: str) -> str:
     with xr.open_dataset(icon_grid_fname) as xr_ds:
         xr_grid = xr_ds.copy(deep=True)
 
-    xr_grid = xr.open_dataset(icon_grid_fname)
-
     # Adapt from Fortran zero basednes... only for real index fields (not all
     # int32 arrays contain indices) for example refin_ctl whereas in ICON
     # indices and refin_ctl values
