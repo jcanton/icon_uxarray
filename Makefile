@@ -32,7 +32,7 @@ fmt:              ## Format code using black & isort.
 .PHONY: lint
 lint:             ## Run pep8, black, mypy linters.
 	$(ENV_PREFIX)flake8 icon_uxarray/
-	$(ENV_PREFIX)black -l 79 --check icon_uxarray/
+	$(ENV_PREFIX)black -l 79 --check --diff icon_uxarray/
 	$(ENV_PREFIX)mypy --ignore-missing-imports icon_uxarray/
 
 .PHONY: test
