@@ -5,7 +5,11 @@ Test module.
 import os
 import xarray as xr
 import uxarray as ux
-from icon_uxarray.base import icon_grid_2_ugrid, is_boundary_triangle
+from icon_uxarray.base import (
+    icon_grid_2_ugrid,
+    is_boundary_triangle,
+    remove_torus_boundaries,
+)
 
 ICON_GRID_FNAME = "Torus_Triangles_100m_x_100m_res5m.nc"
 
@@ -93,3 +97,47 @@ def test_is_boundary_triangle():
 
     # # Clean up the temporary files
     # os.remove(ugrid_fname)
+
+
+def test_remove_torus_boundaries():
+    """
+    Test function for removing torus boundary triangles from a UX grid or
+    dataset.
+    """
+
+    ugrid_fname = icon_grid_2_ugrid(ICON_GRID_FNAME)
+    grid = ux.open_grid(ugrid_fname)
+
+    # Call the function
+    result = remove_torus_boundaries(grid)
+
+    # Assert the result
+    assert isinstance(result, ux.Grid)
+    assert result.n_face == 360
+    assert result.node_lon.values.shape == (208,)
+    assert result.face_node_connectivity.shape == (360, 3)
+
+    # Create a sample UX dataset
+    dataset = ux.UxDataset(
+        uxgrid=grid,
+        data_vars={
+            "temperature": xr.DataArray(range(grid.n_face), dims="n_face")
+            },
+    )
+
+    # Call the function
+    result = remove_torus_boundaries(dataset)
+
+    # Assert the result
+    assert isinstance(result, ux.UxDataset)
+    assert isinstance(result.uxgrid, ux.Grid)
+    assert result.uxgrid.n_face == 360
+    assert result.uxgrid.node_lon.values.shape == (208,)
+    assert result.uxgrid.face_node_connectivity.shape == (360, 3)
+    assert float(result.temperature.min()) == 0.0
+    assert float(result.temperature.max()) == 413
+
+    # Test with invalid grid
+    invalid_grid = None
+    result = remove_torus_boundaries(invalid_grid)
+    assert result is invalid_grid

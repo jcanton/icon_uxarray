@@ -140,3 +140,50 @@ def is_boundary_triangle(grid: ux.Grid, itri: int, lims: list[float]) -> bool:
         # elongated
         return True
     return False
+
+
+# ==============================================================================
+def remove_torus_boundaries(
+    ux_grid_or_ds: ux.Grid | ux.UxDataset,
+) -> ux.Grid | ux.UxDataset:
+    """
+    Removes torus boundary triangles from the given UX grid or dataset.
+
+    Parameters:
+        ux_grid_or_ds (ux.Grid | ux.UxDataset): The UX grid or dataset from
+        which torus boundary triangles will be removed.
+
+    Returns:
+        ux.Grid | ux.UxDataset: The modified UX grid or dataset with torus
+        boundary triangles removed.
+    """
+
+    if isinstance(ux_grid_or_ds, ux.UxDataset):
+        grid = ux_grid_or_ds.uxgrid
+    else:
+        grid = ux_grid_or_ds
+
+    if grid is not None:
+        lims = [
+            float(grid.node_lon.min()),
+            float(grid.node_lon.max()),
+            float(grid.node_lat.min()),
+            float(grid.node_lat.max()),
+        ]
+        face_ids = []
+        for itri in range(grid.n_face):
+            if not is_boundary_triangle(grid, itri, lims):
+                face_ids.append(itri)
+
+        grid2 = grid.isel(n_face=face_ids)
+
+        if isinstance(ux_grid_or_ds, ux.UxDataset):
+            ux_grid_or_ds2 = ux_grid_or_ds.isel(n_face=face_ids)
+            ux_grid_or_ds2.uxgrid = grid2
+            return ux_grid_or_ds2
+        else:
+            return grid2
+
+    else:
+        print("ERROR: Invalid grid provided.")
+        return ux_grid_or_ds
