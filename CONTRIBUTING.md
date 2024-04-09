@@ -2,7 +2,7 @@
 
 icon_uxarray welcomes contributions from the community.
 
-**You need PYTHON3!**
+**You need PYTHON >= 3.10!**
 
 ## install for developing
 
