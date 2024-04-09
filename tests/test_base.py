@@ -2,8 +2,8 @@
 Test module.
 """
 
-import pytest
 import os
+import pytest
 import xarray as xr
 import uxarray as ux
 from icon_uxarray.base import (
