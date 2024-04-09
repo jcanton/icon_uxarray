@@ -110,6 +110,7 @@ def icon_grid_2_ugrid(icon_grid_fname: str) -> str:
     if os.path.isfile(ugrid_fname):
         os.remove(ugrid_fname)
     xr_grid.to_netcdf(ugrid_fname, mode="w", format="NETCDF4")
+    xr_grid.close()
 
     return ugrid_fname
 

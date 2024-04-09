@@ -53,8 +53,8 @@ def test_icon_grid_2_ugrid():
     ugrid_fname = icon_grid_2_ugrid(ICON_GRID_FNAME)
     assert os.path.isfile(ugrid_fname)
 
-    # # Clean up the temporary files
-    # os.remove(ugrid_fname)
+    # Clean up the temporary files
+    os.remove(ugrid_fname)
 
 
 def test_is_boundary_triangle():
@@ -100,8 +100,8 @@ def test_is_boundary_triangle():
 
     assert face_ids == expected
 
-    # # Clean up the temporary files
-    # os.remove(ugrid_fname)
+    # Clean up the temporary files
+    os.remove(ugrid_fname)
 
 
 def test_remove_torus_boundaries():
@@ -146,3 +146,6 @@ def test_remove_torus_boundaries():
     invalid_grid = None
     with pytest.raises(Exception) as e_info:
         remove_torus_boundaries(invalid_grid)
+
+    # Clean up the temporary files
+    os.remove(ugrid_fname)
