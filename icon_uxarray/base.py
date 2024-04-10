@@ -36,8 +36,7 @@ def icon_grid_2_ugrid(icon_grid_fname: str) -> str:
     """
 
     # Load grid
-    with xr.open_dataset(icon_grid_fname) as xr_ds:
-        xr_grid = xr_ds.copy(deep=True)
+    xr_grid = xr.open_dataset(icon_grid_fname)
 
     # Adapt from Fortran zero basednes... only for real index fields (not all
     # int32 arrays contain indices) for example refin_ctl whereas in ICON
@@ -113,6 +112,7 @@ def icon_grid_2_ugrid(icon_grid_fname: str) -> str:
     if os.path.isfile(ugrid_fname):
         os.remove(ugrid_fname)
     xr_grid.to_netcdf(ugrid_fname, mode="w", format="NETCDF4")
+    xr_grid.close()
 
     return ugrid_fname
 
