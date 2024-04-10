@@ -4,6 +4,12 @@ Changelog
 
 (unreleased)
 ------------
+- Fix typo in readme. [Jacopo]
+
+
+0.1.7 (2024-04-10)
+------------------
+- Release: version 0.1.7 🚀 [Jacopo]
 - Lines too long in conftest. [Jacopo]
 - Stop testing on winzoz, xarray does not seem to close files properly.
   [Jacopo]
