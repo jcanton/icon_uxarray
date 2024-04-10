@@ -4,6 +4,23 @@ Changelog
 
 (unreleased)
 ------------
+- Lines too long in conftest. [Jacopo]
+- Stop testing on winzoz, xarray does not seem to close files properly.
+  [Jacopo]
+- Double quotes. [Jacopo]
+- Configure tests in vscode. [Jacopo]
+- I did not understand how to reset properly. [Jacopo]
+- Add environment variable to disable HDF5 file locking to try and fix
+  winzoz issues. [Jacopo]
+- Forgot to delete one line. [Jacopo]
+- Try context manager and copy. [Jacopo]
+- Try closing xarray dataset and cleaning up after tests. [Jacopo]
+- Add test for file overwriting in test_icon_grid_2_ugrid() [Jacopo]
+
+
+0.1.6 (2024-04-09)
+------------------
+- Release: version 0.1.6 🚀 [Jacopo]
 - Add base module to top level. [Jacopo]
 - Fix package name in installation command. [Jacopo]
 
