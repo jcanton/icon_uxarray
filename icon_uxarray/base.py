@@ -11,7 +11,7 @@ import numpy as np
 import xarray as xr
 import uxarray as ux
 
-os.environ['HDF5_USE_FILE_LOCKING'] = 'FALSE'
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 __all__ = [
     "icon_grid_2_ugrid",
