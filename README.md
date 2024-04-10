@@ -39,7 +39,7 @@ server = pn.panel(hvplot).show()
 def sliders_plot(itime, iheight):
     return uxds['temp'].isel(time=itime).isel(height=iheight).plot()
 torus = hv.DynamicMap(sliders_plot, kdims=['time', 'height'])
-hvplot = torus.redim.range(time=(0, len(uxds2.time)), height=(0, len(uxds2.height)))
+hvplot = torus.redim.range(time=(0, len(uxds.time)), height=(0, len(uxds.height)))
 server = pn.panel(hvplot).show()
 ```
 
